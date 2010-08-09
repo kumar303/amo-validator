@@ -67,7 +67,7 @@ def _test_rdf(err, install):
             err.error(("testcases_installrdf",
                        "_test_rdf",
                        "shouldnt_exist"),
-                      "Banned element in install.rdf"
+                      "Banned element in install.rdf",
                       """The element "%s" was found in the add-on's
                       install.rdf file. It is not allowed in add-ons under
                       the current configuration.""" % predicate,

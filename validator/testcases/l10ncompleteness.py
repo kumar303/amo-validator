@@ -7,9 +7,7 @@ from StringIO import StringIO
 from validator import decorator
 from validator.chromemanifest import ChromeManifest
 from validator.xpi import XPIManager
-from validator.constants import PACKAGE_EXTENSION, \
-                      PACKAGE_THEME, \
-                      PACKAGE_LANGPACK
+from validator.constants import *
 
 import validator.testcases.l10n.dtd as dtd
 import validator.testcases.l10n.properties as properties
@@ -18,38 +16,8 @@ import validator.testcases.l10n.properties as properties
 # missing from the package.
 L10N_THRESHOLD = 0.10
 
-def _test_file(err, optionpack):
-    "Runs the L10n tests against an addon package."
-    
-    stdout = sys.stdout
-    sys.stdout = StringIO()
-    
-    compareLocales(optionpack)
-    
-    output = sys.stdout.getvalue()
-    sys.stdout = stdout
-    
-    output = output.strip()
-    print output
-    
-    if not output or output.startswith(("WARNING", "ERROR")):
-        err.info(("testcases_l10ncompleteness",
-                  "_test_file",
-                  "unlocalized"),
-                 "This extension appears not to be localized.",
-                 """The package does not contain any localization
-                 support.""")
-        return None
-    
-    output_parsed = json.loads(output)
-    
-    return output_parsed
-    
-
 def _get_locales(err, xpi_package):
     "Returns a list of locales from the chrome.manifest file."
-    
-    # TODO : Make this into a generator.
     
     # Retrieve the chrome.manifest if it's cached.
     if err.get_resource("chrome.manifest"): # pragma: no cover
@@ -64,6 +32,7 @@ def _get_locales(err, xpi_package):
     # Find all of the locales referenced in the chrome.manifest file.
     for locale in pack_locales:
         locale_jar = locale["object"].split()
+        
         locale_name = locale_jar[0]
         location = locale_jar[-1]
         if not location.startswith("jar:"):
