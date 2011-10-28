@@ -75,6 +75,8 @@ class ErrorBundle(object):
             self.overrides = overrides
         if spidermonkey:
             self.save_resource("SPIDERMONKEY", spidermonkey)
+
+        self.for_appversions = for_appversions
         if for_appversions is not None:
             self.supported_versions = for_appversions
 
